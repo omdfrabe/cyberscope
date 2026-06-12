@@ -803,6 +803,34 @@
             transform: translateY(0);
         }
 
+                .auth-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 28px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: color .2s, border-color .2s;
+        }
+
+        .auth-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .auth-tab:hover:not(.active) { color: var(--text); }
+
         /* ── NAV AUTH ── */
         .nav-auth { display: flex; align-items: center; gap: 12px; }
 
@@ -1215,7 +1243,7 @@
             <div class="stat-label">Simulaciones</div>
         </div>
         <div class="stat-item">
-            <div class="stat-number">52</div>
+            <div class="stat-number">19</div>
             <div class="stat-label">Profesionales</div>
         </div>
     </div>
@@ -1245,7 +1273,7 @@
             </div>
             <div class="mission-card reveal">
                 <h3>Compromiso</h3>
-                <p>Todos nuestros 52 empleados tienen contrato estable, seguridad social y bajas médicas. El 0% de nuestro equipo está inactivo — cada miembro aporta valor real.</p>
+                <p>Todos nuestros 19 empleados tienen contrato estable, seguridad social y bajas médicas. El 0% de nuestro equipo está inactivo — cada miembro aporta valor real.</p>
             </div>
         </div>
     </div>
@@ -1342,7 +1370,7 @@
 <section id="departamentos">
     <div class="dept-section">
         <div class="reveal">
-            <p class="section-label">Equipo — 52 profesionales</p>
+            <p class="section-label">Equipo — 19 profesionales</p>
             <h2 class="section-title">Departamentos y personal</h2>
             <p class="section-body">Seis áreas especializadas que trabajan de forma coordinada desde tres sedes para mantener el simulador actualizado, seguro y accesible.</p>
         </div>
@@ -1592,10 +1620,10 @@
         <a href="#dafo">DAFO</a>
         <a href="#contacto">Contacto</a>
     </div>
-    <div class="footer-copy">© 2026 Cyberscope Inc. — Madrid, España</div>
+    <div class="footer-copy">© 2024 Cyberscope Inc. — Madrid, España</div>
 </footer>
 
-<!-- ── LOGIN MODAL ── -->
+<!-- ── LOGIN / REGISTER MODAL ── -->
 <div class="modal-overlay hidden" id="loginModal" onclick="closeLoginOutside(event)">
     <div class="modal-box">
         <button class="modal-close" onclick="closeLogin()">✕</button>
@@ -1603,25 +1631,57 @@
             <img src="logo.png" alt="Logo" class="logo-img">
             CYBERSCOPE
         </div>
-        <h2 class="modal-title">Acceso de usuarios</h2>
-        <p class="modal-sub">Introduce tus credenciales para acceder a tu panel</p>
 
-        <div class="field-group">
-            <label>Usuario</label>
-            <input type="text" id="loginUser" placeholder="admin / usuario" autocomplete="off">
+        <!-- Tabs -->
+        <div class="auth-tabs">
+            <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Iniciar sesión</button>
+            <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Crear cuenta</button>
         </div>
-        <div class="field-group">
-            <label>Contraseña</label>
-            <input type="password" id="loginPass" placeholder="••••••••">
-        </div>
-        <div class="login-error hidden" id="loginError">⚠ Credenciales incorrectas</div>
-        <button class="btn-primary" style="width:100%;justify-content:center;display:block;margin-top:8px;" onclick="doLogin()">Entrar</button>
 
-        <div class="login-hint">
-            <p>Cuentas de demo:</p>
-            <div class="hint-row"><code>admin</code> / <code>admin123</code> — Administrador</div>
-            <div class="hint-row"><code>usuario</code> / <code>user123</code> — Usuario registrado</div>
+        <!-- LOGIN PANEL -->
+        <div id="panelLogin">
+            <p class="modal-sub">Introduce tus credenciales para acceder a tu panel</p>
+            <div class="field-group">
+                <label>Usuario</label>
+                <input type="text" id="loginUser" placeholder="Tu nombre de usuario" autocomplete="off">
+            </div>
+            <div class="field-group">
+                <label>Contraseña</label>
+                <input type="password" id="loginPass" placeholder="••••••••">
+            </div>
+            <div class="login-error hidden" id="loginError">⚠ Usuario o contraseña incorrectos</div>
+            <button class="btn-primary" style="width:100%;justify-content:center;display:block;margin-top:8px;" onclick="doLogin()">Entrar</button>
+            <div class="login-hint">
+                <p>Cuentas de demo:</p>
+                <div class="hint-row"><code>admin</code> / <code>admin123</code> — Administrador</div>
+                <div class="hint-row"><code>usuario</code> / <code>user123</code> — Usuario registrado</div>
+            </div>
         </div>
+
+        <!-- REGISTER PANEL -->
+        <div id="panelRegister" class="hidden">
+            <p class="modal-sub">Crea tu cuenta gratuita para acceder al simulador</p>
+            <div class="field-group">
+                <label>Nombre completo</label>
+                <input type="text" id="regName" placeholder="Ej: María García" autocomplete="off">
+            </div>
+            <div class="field-group">
+                <label>Usuario</label>
+                <input type="text" id="regUser" placeholder="Sin espacios, ej: maria_garcia" autocomplete="off">
+            </div>
+            <div class="field-group">
+                <label>Contraseña</label>
+                <input type="password" id="regPass" placeholder="Mínimo 6 caracteres">
+            </div>
+            <div class="field-group">
+                <label>Confirmar contraseña</label>
+                <input type="password" id="regPass2" placeholder="Repite la contraseña">
+            </div>
+            <div class="login-error hidden" id="regError">⚠ Error en el registro</div>
+            <div class="login-success hidden" id="regSuccess">✓ Cuenta creada. ¡Ya puedes entrar!</div>
+            <button class="btn-primary" style="width:100%;justify-content:center;display:block;margin-top:8px;" onclick="doRegister()">Crear cuenta</button>
+        </div>
+
     </div>
 </div>
 
@@ -2129,19 +2189,44 @@
         });
     });
 
-    // ── AUTH SYSTEM ──
-    const USERS = {
+    // ── AUTH SYSTEM (localStorage) ──
+
+    // Built-in demo accounts (always available)
+    const DEMO_USERS = {
         admin:   { pass: 'admin123', role: 'admin',  display: 'Admin' },
         usuario: { pass: 'user123',  role: 'user',   display: 'Usuario' }
     };
 
     let currentUser = null;
 
+    // Load registered users from localStorage
+    function getStoredUsers() {
+        try {
+            return JSON.parse(localStorage.getItem('cy_users') || '{}');
+        } catch { return {}; }
+    }
+
+    function saveStoredUsers(users) {
+        localStorage.setItem('cy_users', JSON.stringify(users));
+    }
+
+    // Try to restore session
+    (function restoreSession() {
+        try {
+            const saved = JSON.parse(localStorage.getItem('cy_session') || 'null');
+            if (saved) {
+                currentUser = saved;
+                renderLoggedIn();
+            }
+        } catch {}
+    })();
+
     function openLogin() {
         document.getElementById('loginModal').classList.remove('hidden');
-        document.getElementById('loginError').classList.add('hidden');
+        clearAuthMessages();
         document.getElementById('loginUser').value = '';
         document.getElementById('loginPass').value = '';
+        switchTab('login');
         setTimeout(() => document.getElementById('loginUser').focus(), 100);
     }
 
@@ -2153,18 +2238,46 @@
         if (e.target === document.getElementById('loginModal')) closeLogin();
     }
 
+    function switchTab(tab) {
+        document.getElementById('panelLogin').classList.toggle('hidden', tab !== 'login');
+        document.getElementById('panelRegister').classList.toggle('hidden', tab !== 'register');
+        document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+        document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+        clearAuthMessages();
+    }
+
+    function clearAuthMessages() {
+        ['loginError','regError','regSuccess'].forEach(id => {
+            document.getElementById(id).classList.add('hidden');
+        });
+    }
+
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape') closeLogin();
-        if (e.key === 'Enter' && !document.getElementById('loginModal').classList.contains('hidden')) doLogin();
+        if (e.key === 'Enter' && !document.getElementById('loginModal').classList.contains('hidden')) {
+            const loginVisible = !document.getElementById('panelLogin').classList.contains('hidden');
+            if (loginVisible) doLogin(); else doRegister();
+        }
     });
 
     function doLogin() {
-        const u = document.getElementById('loginUser').value.trim();
+        const u = document.getElementById('loginUser').value.trim().toLowerCase();
         const p = document.getElementById('loginPass').value;
         const err = document.getElementById('loginError');
 
-        if (USERS[u] && USERS[u].pass === p) {
-            currentUser = { name: u, ...USERS[u] };
+        // Check demo accounts first, then stored users
+        const stored = getStoredUsers();
+        let found = null;
+
+        if (DEMO_USERS[u] && DEMO_USERS[u].pass === p) {
+            found = { name: u, ...DEMO_USERS[u] };
+        } else if (stored[u] && stored[u].pass === p) {
+            found = { name: u, role: 'user', display: stored[u].display };
+        }
+
+        if (found) {
+            currentUser = found;
+            localStorage.setItem('cy_session', JSON.stringify(found));
             closeLogin();
             renderLoggedIn();
         } else {
@@ -2173,15 +2286,54 @@
         }
     }
 
+    function doRegister() {
+        const name  = document.getElementById('regName').value.trim();
+        const user  = document.getElementById('regUser').value.trim().toLowerCase();
+        const pass  = document.getElementById('regPass').value;
+        const pass2 = document.getElementById('regPass2').value;
+        const err   = document.getElementById('regError');
+        const ok    = document.getElementById('regSuccess');
+
+        err.classList.add('hidden');
+        ok.classList.add('hidden');
+
+        if (!name || !user || !pass) {
+            err.textContent = '⚠ Rellena todos los campos'; err.classList.remove('hidden'); return;
+        }
+        if (/\s/.test(user)) {
+            err.textContent = '⚠ El usuario no puede tener espacios'; err.classList.remove('hidden'); return;
+        }
+        if (pass.length < 6) {
+            err.textContent = '⚠ La contraseña debe tener al menos 6 caracteres'; err.classList.remove('hidden'); return;
+        }
+        if (pass !== pass2) {
+            err.textContent = '⚠ Las contraseñas no coinciden'; err.classList.remove('hidden'); return;
+        }
+
+        const stored = getStoredUsers();
+        if (DEMO_USERS[user] || stored[user]) {
+            err.textContent = '⚠ Ese nombre de usuario ya existe'; err.classList.remove('hidden'); return;
+        }
+
+        // Save to localStorage
+        stored[user] = { pass, display: name, createdAt: new Date().toISOString() };
+        saveStoredUsers(stored);
+
+        ok.classList.remove('hidden');
+        // Auto-switch to login after 1.5s
+        setTimeout(() => {
+            document.getElementById('loginUser').value = user;
+            switchTab('login');
+        }, 1500);
+    }
+
     function renderLoggedIn() {
-        // Nav
         document.getElementById('btnOpenLogin').classList.add('hidden');
         const navUser = document.getElementById('navUser');
         navUser.classList.remove('hidden');
         document.getElementById('userName').textContent = currentUser.display;
         document.getElementById('userAvatar').textContent = currentUser.display[0].toUpperCase();
 
-        // Show dashboard
         document.getElementById('dashboardWrap').classList.remove('hidden');
         document.getElementById('dashAdmin').classList.add('hidden');
         document.getElementById('dashUser').classList.add('hidden');
@@ -2192,7 +2344,6 @@
             document.getElementById('dashUser').classList.remove('hidden');
         }
 
-        // Scroll to dashboard
         setTimeout(() => {
             document.getElementById('dashboardWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
@@ -2202,6 +2353,7 @@
 
     function logout() {
         currentUser = null;
+        localStorage.removeItem('cy_session');
         document.getElementById('btnOpenLogin').classList.remove('hidden');
         document.getElementById('navUser').classList.add('hidden');
         document.getElementById('dashboardWrap').classList.add('hidden');
